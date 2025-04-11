@@ -1,0 +1,40 @@
+
+
+
+
+
+
+python3 -m venv venv
+source venv/bin/activate
+
+
+
+
+
+
+
+
+
+sudo docker exec -it ollama-container ollama pull phi:latest
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

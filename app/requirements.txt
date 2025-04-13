@@ -3,4 +3,4 @@ langchain
 langchain-community
 ollama 
 requests 
-
+fuzzywuzzy

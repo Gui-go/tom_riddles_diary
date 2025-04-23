@@ -34,20 +34,29 @@ jobs:
           context: ./app
           file: ./app/streamlit.dockerfile
           push: true
-          tags: us-central1-docker.pkg.dev/tom-riddle-diary1/repo/streamlit:latest
+          tags: us-central1-docker.pkg.dev/tom-riddle-diary1/streamlit-ollama-repo/streamlit:latest
 
-      - name: Install Terraform
-        uses: hashicorp/setup-terraform@v3
-        with:
-          terraform_version: 1.11.4
-
-      - name: Terraform Init
-        run: terraform init
-        working-directory: terraform
-
-      - name: Terraform Apply
-        run: terraform apply -auto-approve
-        working-directory: terraform
-        env:
-            TF_VAR_project_id: tom-riddle-diary1
-            TF_VAR_region: us-central1
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy streamlit-ollama-service2 \
+            --region us-central1 \
+            --image us-central1-docker.pkg.dev/tom-riddle-diary1/streamlit-ollama-repo/streamlit:latest \
+            --add-sidecar ollama/ollama:latest \
+            --sidecar-name ollama-container \
+            --sidecar-port 11434 \
+            --sidecar-env "PORT=11434" \
+            --sidecar-command "/bin/sh" \
+            --sidecar-args "-c,ollama serve & sleep 5 && ollama pull phi3 && wait" \
+            --sidecar-cpu 4 \
+            --sidecar-memory 8Gi \
+            --port 8501 \
+            --env "OLLAMA_HOST=http://localhost:11434" \
+            --cpu 2 \
+            --memory 4Gi \
+            --min-instances 1 \
+            --max-instances 10 \
+            --concurrency 80 \
+            --timeout 3600s \
+            --allow-unauthenticated \
+            --service-account streamlit-ollama-service2-sa@tom-riddle-diary1.iam.gserviceaccount.com \
+            --project tom-riddle-diary1

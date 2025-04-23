@@ -18,3 +18,4 @@ terraform.tfstate.backup
 
 
 /terraform/tom-riddle-diary1-gcp-key.json
+gcp-key.json

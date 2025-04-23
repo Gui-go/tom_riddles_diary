@@ -49,5 +49,5 @@ jobs:
         run: terraform apply -auto-approve
         working-directory: terraform
         env:
-          TF_VAR_project_id: tom-riddle-diary1
-          TF_VAR_region: us-central1
+            TF_VAR_project_id: tom-riddle-diary1
+            TF_VAR_region: us-central1

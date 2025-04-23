@@ -13,6 +13,13 @@ gcloud services enable dns.googleapis.com --project=$PROJECT_ID
 gcloud services enable iam.googleapis.com --project=$PROJECT_ID
 gcloud services enable artifactregistry.googleapis.com --project $PROJECT_ID
 # gcloud services enable cloudresourcemanager.googleapis.com --project=$PROJECT_ID
+gcloud services enable cloudresourcemanager.googleapis.com --project=$PROJECT_ID
+gcloud services enable serviceusage.googleapis.com --project=$PROJECT_ID
+gcloud services enable run.googleapis.com --project=$PROJECT_ID
+gcloud services enable iam.googleapis.com --project=$PROJECT_ID
+gcloud services enable artifactregistry.googleapis.com --project=$PROJECT_ID
+
+
 
 gcloud projects list
 gcloud config get-value project
@@ -27,6 +34,8 @@ terraform apply -auto-approve
 gcloud auth configure-docker
 docker build -t gcr.io/tom-riddle-diary1/streamlit-tom-app -f ./app/streamlit.dockerfile ./app
 docker push gcr.io/tom-riddle-diary1/streamlit-tom-app
+
+
 
 
 

@@ -60,7 +60,9 @@ gcloud projects add-iam-policy-binding tom-riddle-diary1 \
 
 
 
-
+cd ~/Documents/04-tom_riddles_diary/app
+docker build -t us-central1-docker.pkg.dev/tom-riddle-diary1/repo/streamlit:latest -f streamlit.dockerfile .
+docker push us-central1-docker.pkg.dev/tom-riddle-diary1/repo/streamlit:latest
 
 
 

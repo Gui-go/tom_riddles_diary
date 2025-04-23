@@ -34,7 +34,7 @@ jobs:
           context: ./app
           file: ./app/streamlit.dockerfile
           push: true
-          tags: gcr.io/tom-riddle-diary1/streamlit-tom-app:latest
+          tags: us-central1-docker.pkg.dev/tom-riddle-diary1/repo/streamlit:latest
 
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3

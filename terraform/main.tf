@@ -8,7 +8,7 @@ provider "google" {
 locals {
   service_name      = "streamlit-ollama-service1"
   repo_id           = "repo"
-  streamlit_image   = "gcr.io/tom-riddle-diary1/streamlit-tom-app:latest"
+  streamlit_image   = "us-central1-docker.pkg.dev/tom-riddle-diary1/repo/streamlit:latest"
   ollama_image      = "ollama/ollama:latest"
   sa_email          = "${local.service_name}-sa@${var.project_id}.iam.gserviceaccount.com"
   resource_limits = {

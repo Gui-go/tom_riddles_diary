@@ -33,12 +33,16 @@ jobs:
         with:
           context: ./app
           push: true
-          tags: us-docker.pkg.dev/tom-riddle-diary1/repo/streamlit-tom-app:latest
+          tags: gcr.io/tom-riddle-diary1/gcr.io/streamlit-tom-app:latest
 
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy streamlit-tom-app-run \
-            --image=us-docker.pkg.dev/tom-riddle-diary1/repo/streamlit-tom-app:latest \
+            --image=gcr.io/tom-riddle-diary1/gcr.io/streamlit-tom-app:latest \
             --platform=managed \
             --region=us-central1 \
             --allow-unauthenticated
+
+
+
+# gcr.io/tom-riddle-diary1/streamlit-tom-app

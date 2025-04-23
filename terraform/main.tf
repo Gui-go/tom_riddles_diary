@@ -6,6 +6,7 @@ provider "google" {
 
 # Define local values for reuse
 locals {
+  proj_id           = "tom-riddle-diary1"
   service_name      = "streamlit-ollama-service1"
   repo_id           = "repo"
   streamlit_image   = "us-central1-docker.pkg.dev/tom-riddle-diary1/repo/streamlit:latest"
@@ -55,6 +56,41 @@ resource "google_project_iam_member" "cloud_run_invoker" {
   role    = "roles/run.invoker"
   member  = "serviceAccount:${local.sa_email}"
 }
+
+resource "google_project_iam_member" "service_usage_admin" {
+  project = var.project_id
+  role    = "roles/serviceusage.serviceUsageAdmin"
+  member  = "serviceAccount:${local.sa_email}"
+}
+
+resource "google_project_iam_member" "service_account_creator" {
+  project = var.project_id
+  role    = "roles/iam.serviceAccountCreator"
+  member  = "serviceAccount:${local.sa_email}"
+}
+
+# resource "google_project_iam_member" "iam_policy_admin" {
+#   project = var.project_id
+#   role    = "roles/iam.policyAdmin"
+#   member  = "serviceAccount:${local.sa_email}"
+# }
+
+# Example for Cloud Run Admin (if needed for creating Cloud Run services)
+resource "google_project_iam_member" "cloud_run_admin" {
+  project = var.project_id
+  role    = "roles/run.admin"
+  member  = "serviceAccount:${local.sa_email}"
+}
+
+# Example for Artifact Registry Admin (if needed for creating AR repositories)
+resource "google_project_iam_member" "artifact_registry_admin" {
+  project = var.project_id
+  role    = "roles/artifactregistry.admin"
+  member  = "serviceAccount:${local.sa_email}"
+}
+
+
+####
 
 # Create an Artifact Registry repository to store container images
 resource "google_artifact_registry_repository" "repo" {

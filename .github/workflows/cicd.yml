@@ -20,10 +20,12 @@ jobs:
         with:
           credentials_json: ${{ secrets.GCP_SA_KEY }}
 
-      - name: Set up gcloud CLI
+      - name: Set up Google Cloud CLI
         uses: google-github-actions/setup-gcloud@v2
         with:
+          service_account_key: ${{ secrets.GCP_SA_KEY }}
           project_id: tom-riddle-diary1
+
 
       - name: Configure Docker for Artifact Registry
         run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
@@ -39,7 +41,7 @@ jobs:
       - name: Install Terraform
         uses: hashicorp/setup-terraform@v3
         with:
-          terraform_version: 1.11.4 # Match your local version
+          terraform_version: 1.11.4
 
       - name: Terraform Init
         run: terraform init

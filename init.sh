@@ -25,5 +25,8 @@ terraform init
 terraform apply -auto-approve
 
 gcloud auth configure-docker
-docker build -t gcr.io/tom-riddle-diary1/streamlit-tom-app -f streamlit.dockerfile .
+docker build -t gcr.io/tom-riddle-diary1/streamlit-tom-app -f ./app/streamlit.dockerfile ./app
 docker push gcr.io/tom-riddle-diary1/streamlit-tom-app
+
+
+

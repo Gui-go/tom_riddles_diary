@@ -40,7 +40,22 @@ gcloud config set project tom-riddle-diary1
 
 
 
+--------------------
 
+gcloud projects get-iam-policy tom-riddle-diary1 --filter="bindings.members:streamlit-ollama-service1-sa@tom-riddle-diary1.iam.gserviceaccount.com"
+
+
+
+
+gcloud projects add-iam-policy-binding tom-riddle-diary1 \
+  --member "serviceAccount:streamlit-ollama-service1-sa@tom-riddle-diary1.iam.gserviceaccount.com" \
+  --role "roles/artifactregistry.writer"  # Allows pushing images
+gcloud projects add-iam-policy-binding tom-riddle-diary1 \
+  --member "serviceAccount:streamlit-ollama-service1-sa@tom-riddle-diary1.iam.gserviceaccount.com" \
+  --role "roles/run.admin"  # For Cloud Run deployment
+gcloud projects add-iam-policy-binding tom-riddle-diary1 \
+  --member "serviceAccount:streamlit-ollama-service1-sa@tom-riddle-diary1.iam.gserviceaccount.com" \
+  --role "roles/iam.serviceAccountUser"  # To act as service accounts
 
 
 

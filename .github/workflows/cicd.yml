@@ -26,7 +26,7 @@ jobs:
           project_id: tom-riddle-diary1
 
       - name: Configure Docker for Artifact Registry
-        run: gcloud auth configure-docker us-docker.pkg.dev
+        run: gcloud auth configure-docker us-central1-docker.pkg.dev --quiet
 
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
@@ -34,16 +34,20 @@ jobs:
           context: ./app
           file: ./app/streamlit.dockerfile
           push: true
-          tags: gcr.io/tom-riddle-diary1/streamlit-tom-app:latest
+          tags: us-central1-docker.pkg.dev/tom-riddle-diary1/streamlit-ollama-repo/streamlit:latest
 
-      - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy streamlit-tom-app-run \
-            --image=gcr.io/tom-riddle-diary1/gcr.io/streamlit-tom-app:latest \
-            --platform=managed \
-            --region=us-central1 \
-            --allow-unauthenticated
+      - name: Install Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.11.4 # Match your local version
 
+      - name: Terraform Init
+        run: terraform init
+        working-directory: terraform
 
-
-# gcr.io/tom-riddle-diary1/streamlit-tom-app
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
+        working-directory: terraform
+        env:
+          TF_VAR_project_id: tom-riddle-diary1
+          TF_VAR_region: us-central1

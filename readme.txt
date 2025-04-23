@@ -68,5 +68,5 @@ docker push us-central1-docker.pkg.dev/tom-riddle-diary1/repo/streamlit:latest
 
 
 
-
+gcloud projects set config
 

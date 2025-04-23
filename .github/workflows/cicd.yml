@@ -33,7 +33,7 @@ jobs:
         with:
           context: ./app
           push: true
-          tags: gcr.io/tom-riddle-diary1/gcr.io/streamlit-tom-app:latest
+          tags: gcr.io/tom-riddle-diary1/streamlit-tom-app:latest
 
       - name: Deploy to Cloud Run
         run: |

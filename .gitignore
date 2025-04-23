@@ -17,4 +17,4 @@ terraform.tfstate.backup
 /terraform/.terraform*
 
 
-/terraform/tom-riddle-diary1-0212883cea2c.json
+/terraform/tom-riddle-diary1-gcp-key.json

@@ -32,6 +32,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./app
+          file: ./app/streamlit.dockerfile
           push: true
           tags: gcr.io/tom-riddle-diary1/streamlit-tom-app:latest
 

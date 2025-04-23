@@ -11,6 +11,7 @@ gcloud config set project $PROJECT_ID
 # gcloud services enable compute.googleapis.com --project=$PROJECT_ID
 gcloud services enable dns.googleapis.com --project=$PROJECT_ID
 gcloud services enable iam.googleapis.com --project=$PROJECT_ID
+gcloud services enable artifactregistry.googleapis.com --project $PROJECT_ID
 # gcloud services enable cloudresourcemanager.googleapis.com --project=$PROJECT_ID
 
 gcloud projects list

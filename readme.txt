@@ -4,6 +4,14 @@
 
 
 
+
+
+
+
+
+
+
+
 python3 -m venv venv
 source venv/bin/activate
 pip install -r app/requirements.txt
@@ -20,7 +28,15 @@ systemctl stop ollama
 
 
 
+guilhermeviegas1993@gmail.com
+---
 
+
+
+
+
+gcloud projects list
+gcloud config set project tom-riddle-diary1
 
 
 

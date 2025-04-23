@@ -137,6 +137,7 @@ def process_diary(state: DiaryState) -> DiaryState:
                 f"You stumble, {user_name}. Tom Riddle hides a name of dread. What is it? Speak truly now.",
                 f"Alas, {user_name}, your words miss the mark. My real name awaits. What is it? Dare to guess again."
             ]
+            ###### Add some others being offensive to the user, calling the user Muggle and bad blood
             response_content = random.choice(incorrect_responses)
             return {
                 "messages": messages + [
@@ -159,6 +160,7 @@ def process_diary(state: DiaryState) -> DiaryState:
         "Eventually bring other characters from your time, like Albus Dumbledore, Rubeus Hagrid, and others into the conversation. You can also add in your sentences how your experience in Hogwarts was."
         f"The writer’s name is {user_name}. Respond as Tom Riddle would: in no more than two sentences, "
         f"Adress non-magical people as 'Muggles' and use the term 'Mudblood' for those of mixed blood. The user ({user_name}) is a Muggle."
+        f"If the user ({user_name}) is not polite, be rude back to them. Seriously, be rude, call them Muggles and Mudbloods."
         "Speak with veiled insight and quiet superiority. Avoid naming yourself Voldemort, unless asked."
         "Be short and concise, avoid long responses, and use simple english that non-native english speakers would be able to understand."
     )
@@ -305,3 +307,5 @@ if __name__ == "__main__":
         main()
     except Exception as e:
         st.error(f"Error: {str(e)}. Ensure Ollama is running and 'phi3' is installed.")
+
+

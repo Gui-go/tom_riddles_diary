@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ollama-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ollama
+  template:
+    metadata:
+      labels:
+        app: ollama
+    spec:
+      containers:
+        - name: ollama-container
+          image: ollama/ollama:latest
+          ports:
+            - containerPort: 11434
+          volumeMounts:
+            - name: ollama-data
+              mountPath: /root/.ollama
+          resources:
+            limits:
+              memory: 8Gi
+            requests:
+              memory: 4Gi
+          command: ["/bin/sh", "-c"]
+          args: ["ollama serve & sleep 5 && ollama pull phi3 && wait"]
+          livenessProbe:
+            httpGet:
+              path: /v1/chat/completions  # A basic Ollama API endpoint
+              port: 11434
+            initialDelaySeconds: 15
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /v1/chat/completions  # A basic Ollama API endpoint
+              port: 11434
+            initialDelaySeconds: 10
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 3
+      volumes:
+        - name: ollama-data
+          persistentVolumeClaim:
+            claimName: ollama-pvc
+      restartPolicy: Always

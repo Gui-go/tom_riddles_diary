@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: llmodel
+  labels:
+    app: llmodel
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: llmodel
+  template:
+    metadata:
+      labels:
+        app: llmodel
+    spec:
+      containers:
+      - name: ollama
+        image: ollama/ollama:latest
+        ports:
+        - containerPort: 11434
+        resources:
+          requests:
+            cpu: "500m"    # 0.5 vCPU
+            memory: "4Gi"  # Minimum
+          limits:
+            cpu: "1000m"   # 1 vCPU
+            memory: "8Gi"  # Maximum
+        volumeMounts:
+        - name: ollama-vol
+          mountPath: /root/.ollama
+        command: ["/bin/sh", "-c", "ollama serve & sleep 5 && ollama pull phi3 && wait"]
+        readinessProbe:
+          exec:
+            command: ["ollama", "list"]
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+      volumes:
+      - name: ollama-vol
+        persistentVolumeClaim:
+          claimName: ollama-vol
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: llmodel-service
+spec:
+  selector:
+    app: llmodel
+  ports:
+  - port: 11434
+    targetPort: 11434
+  type: ClusterIP
+
+

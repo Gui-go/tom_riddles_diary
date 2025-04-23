@@ -4,3 +4,5 @@ langchain-community
 ollama 
 requests 
 fuzzywuzzy
+langgraph
+langgraph-prebuilt

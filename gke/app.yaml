@@ -1,0 +1,54 @@
+# k8s/app.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app
+  labels:
+    app: streamlit
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: streamlit
+  template:
+    metadata:
+      labels:
+        app: streamlit
+    spec:
+      containers:
+      - name: streamlit
+        image: us-central1-docker.pkg.dev/YOUR_PROJECT_ID/my-repo/streamlit:latest
+        ports:
+        - containerPort: 8501
+        env:
+        - name: OLLAMA_HOST
+          value: "http://llmodel-service:11434"
+        resources:
+          requests:
+            cpu: "100m"    # Lightweight frontend
+            memory: "256Mi"
+          limits:
+            cpu: "500m"
+            memory: "512Mi"
+        readinessProbe:
+          httpGet:
+            path: /healthz
+            port: 8501
+          initialDelaySeconds: 5
+          periodSeconds: 10
+      initContainers:
+      - name: wait-for-llmodel
+        image: busybox
+        command: ["sh", "-c", "until nc -z llmodel-service 11434; do echo waiting for llmodel; sleep 2; done;"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-service
+spec:
+  selector:
+    app: streamlit
+  ports:
+  - port: 8501
+    targetPort: 8501
+  type: LoadBalancer  # Exposes app externally

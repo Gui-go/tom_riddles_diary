@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: app-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: app
+  template:
+    metadata:
+      labels:
+        app: app
+    spec:
+      containers:
+        - name: app-container
+          image: guigo13/streamlit-app
+          ports:
+            - containerPort: 8501
+          env:
+            - name: OLLAMA_HOST
+              value: http://ollama-service:11434
+          readinessProbe:
+            httpGet:
+              path: / # Adjust if your Streamlit app has a different health check endpoint
+              port: 8501
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 2
+            failureThreshold: 3
+          restartPolicy: Always
+      restartPolicy: Always

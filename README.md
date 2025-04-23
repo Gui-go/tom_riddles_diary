@@ -130,6 +130,9 @@ If python-Levenshtein fails to install, fuzzywuzzy will work but may be slower.
 - Custom Riddles: Introduce new puzzles tied to Harry Potter lore, like Horcrux hints.
 - Accessibility: Add options for higher contrast or larger fonts for better usability.
 - Multi-language Support: Allow Riddle to respond in other languages for global users.
+- Host it on GCP.
+- Serve it with Kubernetes, through GKE.
+- Add Pub/Sub.
 
 ## License
 This project is licensed under the GNU License. See the LICENSE file for details.

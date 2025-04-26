@@ -156,8 +156,8 @@ resource "google_cloud_run_v2_service" "streamlit_ollama_service" {
     }
     # service_account_name = local.sa_email
     scaling {
-      min_instance_count = 1
-      max_instance_count = 10
+      min_instance_count = 0
+      max_instance_count = 2
     }
     annotations = {
       "run.googleapis.com/ingress" = "all"

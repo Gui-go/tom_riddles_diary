@@ -1,0 +1,53 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: ollama-app
+spec:
+  template:
+    metadata:
+      annotations:
+        run.googleapis.com/cpu-throttling: "false"  # Needed for CPU-intensive workloads
+        autoscaling.knative.dev/maxScale: "1"       # Ollama works best with single instance
+    spec:
+      containerConcurrency: 1
+      containers:
+      - name: llmodel
+        image: ollama/ollama:latest
+        ports:
+        - containerPort: 11434
+        resources:
+          limits:
+            cpu: "2"
+            memory: 8G
+        command: ["/bin/sh"]
+        args: ["-c", "ollama serve & sleep 5 && ollama pull phi3 && wait"]
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 11434
+          initialDelaySeconds: 10
+          periodSeconds: 30
+          timeoutSeconds: 10
+          failureThreshold: 3
+        volumeMounts:
+        - name: vol
+          mountPath: /root/.ollama
+      - name: app
+        image: gcr.io/tom-riddle-diary1/streamlit-tom-app:latest  # You'll need to build/push this
+        ports:
+        - containerPort: 8501
+        env:
+        - name: OLLAMA_HOST
+          value: "localhost:11434"  # Containers communicate via localhost in Cloud Run
+        resources:
+          limits:
+            cpu: "1"
+            memory: 2G
+      
+      volumes:
+      - name: vol
+        emptyDir: {}  # Note: This is ephemeral storage in Cloud Run
+
+  traffic:
+  - percent: 100
+    latestRevision: true

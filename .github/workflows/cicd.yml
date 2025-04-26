@@ -39,10 +39,10 @@ jobs:
     - name: Build and Push Main App
       working-directory: ./app
       run: |
-        # docker build -t gcr.io/$PROJECT_ID/main-app:latest .
-        # docker push gcr.io/$PROJECT_ID/main-app:latest
-        docker build -t us-central1-docker.pkg.dev/tom-riddle-diary1/repo/streamlit:latest -f streamlit.dockerfile .
-        docker push us-central1-docker.pkg.dev/tom-riddle-diary1/repo/streamlit:latest
+        docker build -t gcr.io/tom-riddle-diary1/main-app:latest -f streamlit.dockerfile .
+        docker push gcr.io/tom-riddle-diary1/main-app:latest
+        # docker build -t us-central1-docker.pkg.dev/tom-riddle-diary1/repo/streamlit:latest -f streamlit.dockerfile .
+        # docker push us-central1-docker.pkg.dev/tom-riddle-diary1/repo/streamlit:latest
 
     # Build and push sidecar
     # - name: Build and Push Sidecar

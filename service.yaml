@@ -2,51 +2,57 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: ollama-app
+  annotations:
+    run.googleapis.com/launch-stage: "BETA"  # Required for sidecars
 spec:
   template:
     metadata:
       annotations:
-        run.googleapis.com/cpu-throttling: "false"  # Needed for CPU-intensive workloads
-        autoscaling.knative.dev/maxScale: "1"       # Ollama works best with single instance
+        run.googleapis.com/cpu-throttling: "false"
+        autoscaling.knative.dev/maxScale: "1"
+        run.googleapis.com/enable-http2: "true"  # Helps with streaming responses
     spec:
       containerConcurrency: 1
       containers:
+      # Main container (must expose only one port)
+      - name: app
+        image: gcr.io/tom-riddle-diary1/streamlit-tom-app:latest
+        ports:
+        - containerPort: 8501  # Only one container can expose ports
+        env:
+        - name: OLLAMA_HOST
+          value: "localhost:11434"
+        resources:
+          limits:
+            cpu: "1"
+            memory: 2G
+
+      # Sidecar container (no port exposure)
       - name: llmodel
         image: ollama/ollama:latest
-        ports:
-        - containerPort: 11434
+        # Removed ports section since sidecar can't expose ports
+        command: ["/bin/sh"]
+        args: ["-c", "ollama serve & sleep 5 && ollama pull phi3 && wait"]
         resources:
           limits:
             cpu: "2"
             memory: 8G
-        command: ["/bin/sh"]
-        args: ["-c", "ollama serve & sleep 5 && ollama pull phi3 && wait"]
         livenessProbe:
-          httpGet:
-            path: /
-            port: 11434
-          initialDelaySeconds: 10
+          exec:  # Changed from httpGet since port isn't exposed
+            command:
+              - ollama
+              - list
+          initialDelaySeconds: 30  # Give more time for model to load
           periodSeconds: 30
           timeoutSeconds: 10
           failureThreshold: 3
         volumeMounts:
         - name: vol
           mountPath: /root/.ollama
-      - name: app
-        image: gcr.io/tom-riddle-diary1/streamlit-tom-app:latest  # You'll need to build/push this
-        ports:
-        - containerPort: 8501
-        env:
-        - name: OLLAMA_HOST
-          value: "localhost:11434"  # Containers communicate via localhost in Cloud Run
-        resources:
-          limits:
-            cpu: "1"
-            memory: 2G
       
       volumes:
       - name: vol
-        emptyDir: {}  # Note: This is ephemeral storage in Cloud Run
+        emptyDir: {}
 
   traffic:
   - percent: 100

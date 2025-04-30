@@ -73,3 +73,11 @@ gcloud projects set config
 
 
 
+docker build -t us-central1-docker.pkg.dev/tom-riddle-diary1/repo/streamlit:latest -f streamlit.dockerfile .
+gcloud auth configure-docker us-central1-docker.pkg.dev
+
+# Push the image
+docker push us-central1-docker.pkg.dev/tom-riddle-diary1/repo/streamlit:latest
+
+
+

@@ -42,7 +42,7 @@ jobs:
 
     - name: Deploy to Cloud Run
       run: |
-        gcloud run deploy tom-riddle-diary \
+        gcloud run deploy toms-frontend \
           --image=gcr.io/tom-riddle-diary1/frontend-app:latest \
           --platform=managed \
           --region=$REGION \

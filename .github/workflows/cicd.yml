@@ -42,16 +42,10 @@ jobs:
 
     - name: Deploy to Cloud Run
       run: |
-        gcloud run services replace service.yaml \
-          --region=$REGION \
-          --project=tom-riddle-diary1
-
-    - name: Deploy to Cloud Run
-      run: |
         gcloud run deploy tom-riddle-diary \
           --image=gcr.io/tom-riddle-diary1/frontend-app:latest \
           --platform=managed \
-          --region=us-central1 \
+          --region=$REGION \
           --allow-unauthenticated
   
 

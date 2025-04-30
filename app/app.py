@@ -195,7 +195,7 @@ def process_diary(state: DiaryState) -> DiaryState:
     }
 
 def main():
-    st.set_page_config(page_title="Tom Riddle's Diary", page_icon="📖", layout="centered")
+    st.set_page_config(page_title="Tom Riddle's Diary (v0.002)", page_icon="📖", layout="centered")
     st.title("Tom Riddle's Diary")
     st.markdown("**Write with care... the diary never forgets.**", unsafe_allow_html=True)
 

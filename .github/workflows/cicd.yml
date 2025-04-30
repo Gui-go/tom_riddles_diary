@@ -37,8 +37,8 @@ jobs:
     - name: Build and Push Main App
       working-directory: ./app
       run: |
-        docker build -t gcr.io/tom-riddle-diary1/main-app:latest -f streamlit.dockerfile .
-        docker push gcr.io/tom-riddle-diary1/main-app:latest
+        docker build -t gcr.io/tom-riddle-diary1/frontend-app -f streamlit.dockerfile .
+        docker push gcr.io/tom-riddle-diary1/frontend-app
 
     - name: Deploy to Cloud Run
       run: |
@@ -46,3 +46,17 @@ jobs:
           --region=$REGION \
           --project=tom-riddle-diary1
 
+    - name: Deploy to Cloud Run
+      run: |
+        gcloud run deploy tom-riddle-diary \
+          --image=gcr.io/tom-riddle-diary1/frontend-app:latest \
+          --platform=managed \
+          --region=us-central1 \
+          --allow-unauthenticated
+  
+
+
+
+
+
+          
